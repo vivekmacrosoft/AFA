@@ -1,0 +1,58 @@
+<ion-header>
+  <br><br>
+  <div align="center">   
+  <ion-navbar >
+    <ion-title></ion-title>
+    <ion-title>AFA machineQ Control Panel</ion-title>
+    <button color="danger" ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    <ion-buttons round outline end> <button color="danger" ion-button round outline (click)="logout()"> Logout </button> </ion-buttons>
+  </ion-navbar>
+</div> 
+</ion-header>
+
+
+
+
+<ion-content class="card-background-page">
+<p align="center" style="color:white"><b>Last Refresh: {{date | date : 'mediumTime'}}</b></p>
+    <div  style="height:275px;overflow: auto;">
+    <ion-card *ngFor="let device of panel; let i = index">
+    <div *ngIf="device.id!='4491600000F7BF4C'">
+    
+      <ion-card-header [ngStyle]="{'background':device.color}" style="font-size: 0.9em" (click)="toogleAccordion(i)">
+        <b>{{device.name}} &nbsp;&nbsp;
+          <!-- <i (click)="showStats(device.name,device.id,device.isSimulated) && toogleAccordion('doNotToggle')" class="fa fa-line-chart" style="color:red" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp; -->
+          <!-- <i *ngIf="device.healthStatus==='ACTIVE'" class="fa fa-check" style="color:green"></i><i *ngIf="device.healthStatus && device.healthStatus!=='ACTIVE'" class="fa fa-times" style="color:red"></i> -->
+          </b>
+      </ion-card-header>
+
+      <ion-card-content  [ngStyle]="{'background':device.color}" (click)="toogleAccordion(i)" *ngIf="show[i]">
+        <div>
+         <p>Device ID: {{device.id}}<br>
+          Device Created At: {{device.createdAt}}<br>
+          <button ion-button color="secondary" round small (click)="showAnalytics(device.name,device.id)">Analytics</button>
+          </p>
+        </div>
+      </ion-card-content>
+</div>
+    </ion-card>
+    </div>
+    
+    <br>
+   <!--  <ion-card>
+    <agm-map #AgmMap (mapReady)="mapReadyFun($event)" [latitude]="defaultLat" [longitude]="defaultLong">  
+      <agm-marker *ngFor="let device of panel;let j=index;" [latitude]="device.lat" [longitude]="device.long" (markerClick)="toogleAccordion(j)">
+          <agm-info-window>
+            <strong>{{device.name}}</strong>
+          </agm-info-window>
+        </agm-marker>
+        <agm-circle [radius]="1" [fillColor]="'blue'" [circleDraggable]="false"
+        [editable]="false" [latitude]="userLat" [longitude]="userLong">
+      </agm-circle>
+      <agm-marker [latitude]="userLat" [longitude]="userLong" iconUrl="https://maps.google.com/mapfiles/ms/icons/blue.png"></agm-marker>
+      </agm-map>
+      <ion-buttons round outline middle> <button color="primary" ion-button round outline (click)="resetView()"> Reset Map View </button> </ion-buttons>
+    </ion-card> -->
+</ion-content>

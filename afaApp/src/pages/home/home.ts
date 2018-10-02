@@ -39,6 +39,7 @@ export class HomePage {
   defaultLong:number;
   defaultLevels:any;
   Name: any[];
+  DeviceData: any;
   @ViewChild('AgmMap') agmMap: AgmMap;
 
   constructor(private localNotifications: LocalNotifications, private geolocation: Geolocation,private cookieService: CookieService,private alertCtrl: AlertController,private deviceService: DeviceService,public navCtrl: NavController, public navParams: NavParams) {
@@ -80,9 +81,7 @@ export class HomePage {
       this.Min = parseFloat(this.cookieService.get('Min'));
       this.Max = parseFloat(this.cookieService.get('Max'));  
    this.updateData();
-  this.setIntervalId= setInterval(()=>{
-    this.updateData();
-   },50000)
+ 
   }
 
   ionViewDidLoad(){ 
@@ -128,7 +127,7 @@ export class HomePage {
     this.deviceService.getAllGateways().subscribe((gatewaysFromApi:any[])=>{
       this.gateways=gatewaysFromApi['Gateways'];
       this.deviceService.getAllDevices().subscribe((devicesFromApi:any[])=>{
-        this.devices=devicesFromApi['Devices'];
+        this.devices=devicesFromApi['Items'];
         console.log(this.devices);
         for(var i=0;i<this.devices.length;i++)
         { let currentPanel = new DeviceInfo();
@@ -141,6 +140,7 @@ export class HomePage {
           this.panel.push(currentPanel);
         }
       });
+      
     },
   err=>{
     console.log(err.error.error);

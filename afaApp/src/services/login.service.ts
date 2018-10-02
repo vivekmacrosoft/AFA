@@ -20,6 +20,7 @@ export class LoginService {
   }
 
   login(user: UserLogin) {
+    console.log(UserLogin);
     return this.http.post(this.mqApiString + 'login', user, {headers: this.headers});
   }
 

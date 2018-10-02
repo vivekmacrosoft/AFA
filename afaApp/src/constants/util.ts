@@ -14,7 +14,17 @@ export class Util {
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+     
       'authorization': this.cookieService.get('xAuthToken')
+    })
+  };
+  public  get SECURED_HEADER_AWS(): HttpHeaders {
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin':'*',
+      'Access-Control-Allow-Methods':'POST, GET, OPTIONS, PUT',
+      
     })
   };
 

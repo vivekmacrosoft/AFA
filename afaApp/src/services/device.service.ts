@@ -18,6 +18,12 @@ export class DeviceService {
 
   }
 
+  getUser(username){
+    this.headerAWS.set("requestType", "login");
+    this.headerAWS.set("username", username);
+    return this.http.get("https://gkefuynsbd.execute-api.us-east-1.amazonaws.com/TEST/getdevices",{headers:this.headerAWS});
+  }
+
   getDevice(id) {
     return this.http.get(this.mqApiString + 'devices/' + id, {headers: this.util.SECURED_HEADER});
   }
@@ -25,8 +31,6 @@ export class DeviceService {
   getAllDevices() {
     this.headerAWS.set("requestType",'getdevices');
     return this.http.get("https://gkefuynsbd.execute-api.us-east-1.amazonaws.com/TEST/getdevices",{headers:this.headerAWS});
-    
-  
   }
    
   getAllGateways() {

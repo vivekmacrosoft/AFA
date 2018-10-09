@@ -107,18 +107,31 @@ export class LoginPage {
       this.cookieService.set('username', this.accountClient.username);
       this.cookieService.set('password', this.accountClient.password);
     }
+    
     if (this.accountClient.username == '' || this.accountClient.password == '') {
-
-
       this.presentAlert();
       return;
     }
-    if (this.accountClient.username == 'AFA' && this.accountClient.password == 'afa2018') {
-      this.loginService.login(this.account).subscribe((data: any) => {
+    // if (this.accountClient.username == 'AFA' && this.accountClient.password == 'afa2018') {
+      this.loginService.login(this.accountClient).subscribe((data: any) => {
+        console.log(data);
         if (data && data.token) {
           this.cookieService.set('xAuthToken', data.token);
           this.presentToast();
           this.navCtrl.setRoot('HomePage');
+        }
+
+        else if(data == "Wrong password"){
+          let alert = this.alertCtrl.create({
+            title: 'Wrong Credentials!',
+            subTitle: 'Please make re-check your credentials',
+            buttons: ['Dismiss']
+          });
+          alert.present();
+        }
+
+        else{
+          this.showError();
         }
       },
         err => {
@@ -132,12 +145,12 @@ export class LoginPage {
           }
 
         })
-    }
-    else {
+    // }
+    // else {
 
-      this.presentFailedAlert();
-      return;
-    }
+    //   this.presentFailedAlert();
+    //   return;
+    // }
   }
 
   showError() {
@@ -189,21 +202,21 @@ export class LoginPage {
     alert.present();
   }
 
-  doForgotPassword() {
-    var username = {
-      Username: this.accountClient.username
-    };
-    this.loginService.forgotPassword(username).subscribe((data: any) => {
-      console.log(data);
-      if (data.response == true) {
-        this.showForgotPasswordSuccess();
-      }
-      else {
-        this.showForgotPasswordFailure();
-      }
-    }, err => {
-      this.showError();
-    })
+  // doForgotPassword() {
+  //   var username = {
+  //     Username: this.accountClient.username
+  //   };
+  //   this.loginService.forgotPassword(username).subscribe((data: any) => {
+  //     console.log(data);
+  //     if (data.response == true) {
+  //       this.showForgotPasswordSuccess();
+  //     }
+  //     else {
+  //       this.showForgotPasswordFailure();
+  //     }
+  //   }, err => {
+  //     this.showError();
+  //   })
 
-  }
+  // }
 }

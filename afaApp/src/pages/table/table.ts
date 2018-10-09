@@ -52,13 +52,17 @@ export class TablePage {
     const utcTime = date.getUTCFullYear().toString()+"-"+dateMonthString+"-"+dateDayString+"T00:00:00.000Z";
     console.log(utcTime);
     this.deviceService.getPayloadData(this.deviceId,utcTime).subscribe((data)=>{
-      this.payloadData = data['Payloads'];
-      console.log(this.payloadData);
+      console.log(data);
+      this.payloadData = data['Items'];
+     
       for(var i=0; i<this.payloadData.length; i++){
         let currentPanel = new DeviceInfo();
-        const tableDate = new Date(this.payloadData[i].Time);
+        console.log(this.payloadData[i].Time.S);
+        const tableDate = new Date(this.payloadData[i].Time.S);
+        
+        console.log("tabledtae "+tableDate);
         currentPanel.date = tableDate;
-        currentPanel.RawData = this.payloadData[i].Data.RawData;
+        currentPanel.RawData = this.payloadData[i].RawData.S;
         this.panel.push(currentPanel);
       }
     });

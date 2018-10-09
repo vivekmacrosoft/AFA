@@ -12,7 +12,7 @@ export class LoginService {
     'Accept': 'application/json'
   });
   
-  headerAWS = new HttpHeaders();
+  
 
   constructor(private http: HttpClient) {
     
@@ -20,7 +20,7 @@ export class LoginService {
   }
 
   login(user: UserLogin) {
-    
+
     return this.http.get("https://gkefuynsbd.execute-api.us-east-1.amazonaws.com/TEST/getuser?requestType=login&username="+user.username+"&password="+user.password);
   }
   // machineQlogin(user: UserLogin) {

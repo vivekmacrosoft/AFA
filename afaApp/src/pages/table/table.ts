@@ -61,8 +61,48 @@ export class TablePage {
         const tableDate = new Date(this.payloadData[i].Time.S);
         
         console.log("tabledtae "+tableDate);
+
         currentPanel.date = tableDate;
-        currentPanel.RawData = this.payloadData[i].RawData.S;
+        var messageType= this.payloadData[i].RawData.S.substr(2,2);
+        var payLoad= this.payloadData[i].RawData.S.substr(4);
+       
+        
+        
+        switch(messageType){
+            case 'fd':{
+                if(payLoad=='01'){
+                  currentPanel.RawData  = "Sensor state message (OPEN)";
+                }
+                else if(payLoad=='00'){
+                  currentPanel.RawData  = "Sensor state message (CLOSED)";
+                }
+                break;
+            }
+            case '02':{
+                if(payLoad=='01'){
+                  currentPanel.RawData  = "Tamper switch message (CLOSED)";
+                }
+                else if(payLoad=='00'){
+                  currentPanel.RawData  = "Tamper switch message (OPEN)";
+                }
+                break;
+            }
+            case '07':{
+                if(payLoad=='01'){
+                  currentPanel.RawData  = "Sensor Event (CLOSED)";
+                }
+                else if(payLoad=='00'){
+                  currentPanel.RawData  = "Sensor Event (OPEN)";
+                }
+                break;
+            }
+            default:{
+              currentPanel.RawData = this.payloadData[i].RawData.S;
+
+            }
+            
+            }
+        
         this.panel.push(currentPanel);
       }
     });

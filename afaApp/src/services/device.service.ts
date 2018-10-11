@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Util} from '../constants/util';
 import {HttpHeaders} from '@angular/common/http';
  
 
@@ -9,12 +8,7 @@ export class DeviceService {
 
   //private mqApiString = "https://api.machineq.net/v1/";
   headerAWS = new HttpHeaders();
-  
-
-
-
-
-  constructor(private util: Util, private http: HttpClient) {
+  constructor( private http: HttpClient) {
 
   }
 
@@ -32,10 +26,7 @@ export class DeviceService {
     return this.http.get("https://gkefuynsbd.execute-api.us-east-1.amazonaws.com/TEST/getdevices?requestType=getdevices");
   }
    
-  getAllGateways() {
-  //   return this.http.get(this.mqApiString + 'gateways', {headers: this.util.SECURED_HEADER});
-  return this.http.get("https://gkefuynsbd.execute-api.us-east-1.amazonaws.com/TEST/getdevices?requestType=getdevices");
-  }
+ 
 
 
   // getDeviceStats(id) {

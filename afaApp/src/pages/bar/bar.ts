@@ -103,13 +103,13 @@ export class BarPage {
     this.deviceService.getPayloadData(this.deviceId,utcTime).subscribe((data)=>{
       var i;
       var a=0;
-      this.payloadData = data['Payloads'];
+      this.payloadData = data['Items'];
       console.log(this.payloadData);
       for(i=0;i<this.payloadData.length;i++)
       {
-       var currentDate = new Date(this.payloadData[i].Time);
-       this.payloadData[i].Time = currentDate.getDate() + "-" + currentDate.getMonth();
-       console.log(this.payloadData[i].Time);
+       var currentDate = new Date(this.payloadData[i].Time.S);
+       this.payloadData[i].Time.S = currentDate.getDate() + "-" + currentDate.getMonth();
+       console.log(this.payloadData[i].Time.S);
       }
       for(i=0;i<this.dateStringArray.length;i++)
       {
@@ -121,13 +121,13 @@ export class BarPage {
       {
         for(var j=0;j<this.payloadData.length;j++)
         {
-          if(this.payloadData[j].Time===this.myCustomPayloadData[i].date)
+          if(this.payloadData[j].Time.S===this.myCustomPayloadData[i].date)
           {
-            if(this.payloadData[j].Data.RawData.indexOf('fd')>=0)
+            if(this.payloadData[j].RawData.S.indexOf('fd')>=0)
             {
               a++;
               this.count[i]=a;
-              console.log(this.payloadData[j].Data.RawData);
+              console.log(this.payloadData[j].RawData.S);
             }
           }
         }

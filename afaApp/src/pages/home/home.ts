@@ -1,10 +1,11 @@
 import { Component,ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DeviceService } from '../../services/device.service';
+import { GatewayService } from '../../services/gateway.service';
+import { ExceptionService } from '../../services/exception.service';
 import { DeviceInfo } from '../../model/DeviceInfo';
 import { AlertController } from 'ionic-angular';
 import {LoginPage} from '../login/login';
-import { LocalNotifications } from '@ionic-native/local-notifications';
 import {CookieService} from 'ngx-cookie-service';
 import { Geolocation } from '@ionic-native/geolocation';
 import { AgmMap, LatLngBounds} from '@agm/core';
@@ -42,7 +43,7 @@ export class HomePage {
   DeviceData: any;
   @ViewChild('AgmMap') agmMap: AgmMap;
 
-  constructor(private localNotifications: LocalNotifications, private geolocation: Geolocation,private cookieService: CookieService,private alertCtrl: AlertController,private deviceService: DeviceService,public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private geolocation: Geolocation,private cookieService: CookieService,private alertCtrl: AlertController,private deviceService: DeviceService,private exceptionService: ExceptionService,private gatewayService: GatewayService,public navCtrl: NavController, public navParams: NavParams) {
     var dateMonthString;
     var dateDayString;
     const date = new Date();
@@ -124,7 +125,7 @@ export class HomePage {
     this.date = new Date();
     this.panel=[];
     this.show=[];
-    this.deviceService.getAllGateways().subscribe((gatewaysFromApi:any[])=>{
+    this.gatewayService.getAllGateways().subscribe((gatewaysFromApi:any[])=>{
       this.gateways=gatewaysFromApi['Gateways'];
       this.deviceService.getAllDevices().subscribe((devicesFromApi:any[])=>{
         this.devices=devicesFromApi['Items'];
@@ -143,35 +144,26 @@ export class HomePage {
       
     },
   err=>{
+    var title,subTitle;
     console.log(err.error.error);
     if(err.error.error==="valid token required.")
     {
-      let alert = this.alertCtrl.create({
-        title: 'Token Expired',
-        subTitle: 'Please re-login to the application.',
-        buttons: ['Dismiss']
-      });
-      alert.present();
-      this.navCtrl.setRoot(LoginPage);
+       title= 'Token Expired';
+       subTitle= 'Please re-login to the application.';
+      this.exceptionService.errorMessage(title,subTitle);
+     
     }
     else if(!this.online){
-      let alert = this.alertCtrl.create({
-        title: 'Internet connection lost!',
-        subTitle: 'Please make sure that you are connected to the internet.',
-        buttons: ['Dismiss']
-      });
-      alert.present();
-      this.navCtrl.setRoot(LoginPage);
+        title= 'Internet connection lost!';
+       subTitle= 'Please make sure that you are connected to the internet.';
+      this.exceptionService.errorMessage(title,subTitle);
+      
     }
     else
     {
-      let alert = this.alertCtrl.create({
-        title: 'Service temporarily down!',
-        subTitle: 'Please contact machineQ support at machineq_support@comcast.com.',
-        buttons: ['Dismiss']
-      });
-      alert.present();
-      this.navCtrl.setRoot(LoginPage);
+        title= 'Service temporarily down!';
+       subTitle= 'Please contact machineQ support at machineq_support@comcast.com.';
+      this.exceptionService.errorMessage(title,subTitle);
     }
   });
   }
@@ -210,12 +202,10 @@ export class HomePage {
 
   openPage()
   {
-    let alert = this.alertCtrl.create({
-      title: 'Coming soon!',
-      subTitle: 'Functionality is coming soon.',
-      buttons: ['Dismiss']
-    });
-    alert.present();
+    var title= 'Coming soon!';
+    var subTitle= 'Functionality is coming soon.';
+    this.exceptionService.errorMessage(title,subTitle);
+    
   }
 
   logout()
@@ -229,4 +219,8 @@ export class HomePage {
     value=this.defaultLevels;
     this.mapReadyFunTwo(value);
   }
+
+
+
+  
 }

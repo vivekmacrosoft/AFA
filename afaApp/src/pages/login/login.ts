@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {UserLogin} from '../../model/UserLogin';
 import {LoginService} from '../../services/login.service';
+import { ExceptionService } from '../../services/exception.service';
 import {AlertController} from 'ionic-angular';
 import {ToastController} from 'ionic-angular';
 import {CookieService} from 'ngx-cookie-service';
@@ -20,7 +21,7 @@ export class LoginPage {
   stayLoggedIn: boolean;
   showForgotPassword: boolean;
   touchIdAvail: boolean;
-  constructor(public plt: Platform, private cookieService: CookieService, private toastCtrl: ToastController, private alertCtrl: AlertController, private loginService: LoginService, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public plt: Platform, private cookieService: CookieService, private toastCtrl: ToastController, private alertCtrl: AlertController, private loginService: LoginService,  private exceptionService: ExceptionService,public navCtrl: NavController, public navParams: NavParams) {
 
     console.log(this.plt);
     this.accountClient = {
@@ -62,30 +63,24 @@ export class LoginPage {
   }
 
   presentAlert() {
-    let alert = this.alertCtrl.create({
-      title: 'Login',
-      subTitle: 'Username and password are required for login',
-      buttons: ['Dismiss']
-    });
-    alert.present();
+    var title= 'Login';
+    var subTitle= 'Username and password are required for login';
+    this.exceptionService.errorMessage(title,subTitle);
+    
   }
 
   presentFailedAlert() {
-    let alert = this.alertCtrl.create({
-      title: 'Invalid Login',
-      subTitle: 'Please enter correct username and password',
-      buttons: ['Dismiss']
-    });
-    alert.present();
+    var title= 'Invalid Login';
+    var subTitle= 'Please enter correct username and password';
+    this.exceptionService.errorMessage(title,subTitle);
+    
   }
 
   presentFailedAlertTouchID() {
-    let alert = this.alertCtrl.create({
-      title: 'Invalid Login',
-      subTitle: 'Username and password are required for using touch-id/face-id for the first time',
-      buttons: ['Dismiss']
-    });
-    alert.present();
+    var title= 'Invalid Login';
+    var subTitle= 'Username and password are required for using touch-id/face-id for the first time';
+    this.exceptionService.errorMessage(title,subTitle);
+    
   }
 
   presentToast() {
@@ -122,12 +117,11 @@ export class LoginPage {
         }
 
         else if(data == "Wrong password"){
-          let alert = this.alertCtrl.create({
-            title: 'Wrong Credentials!',
-            subTitle: 'Please make re-check your credentials',
-            buttons: ['Dismiss']
-          });
-          alert.present();
+
+          var title= 'Wrong Credentials!';
+          var subTitle= 'Please make re-check your credentials';
+          this.exceptionService.errorMessage(title,subTitle);
+          
         }
 
         else{

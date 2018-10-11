@@ -15,6 +15,8 @@ import { DatePipe } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
 import { Util } from '../constants/util';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { ExceptionService } from '../services/exception.service';
+import { GatewayService } from '../services/gateway.service';
 
 
 
@@ -41,6 +43,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
     LoginService,
     DeviceService,
     LoadingController,
+    ExceptionService,
+    GatewayService,
     LocalNotifications,
     DatePipe,
     StatusBar,

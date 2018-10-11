@@ -17,6 +17,7 @@ import { Util } from '../constants/util';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { ExceptionService } from '../services/exception.service';
 import { GatewayService } from '../services/gateway.service';
+import { UtilityService } from '../services/utility.service';
 
 
 
@@ -45,6 +46,7 @@ import { GatewayService } from '../services/gateway.service';
     LoadingController,
     ExceptionService,
     GatewayService,
+    UtilityService,
     LocalNotifications,
     DatePipe,
     StatusBar,

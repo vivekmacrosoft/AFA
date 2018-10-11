@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DeviceService } from '../../services/device.service';
-import {CookieService} from 'ngx-cookie-service';
+import { UtilityService } from '../../services/utility.service';
+import { CookieService } from 'ngx-cookie-service';
 import { Chart } from 'chart.js';
 import { LoadingController } from 'ionic-angular';
-import {MyCustomPayload} from '../../model/MyCustomPayload';
-import {LoginPage} from '../login/login';
+import { MyCustomPayload } from '../../model/MyCustomPayload';
+import { LoginPage } from '../login/login';
 
 /**
  * Generated class for the BarPage page.
@@ -23,11 +24,11 @@ export class BarPage {
 
   @ViewChild('bar') bar;
 
-  dateStringArray:string[];
-  dateStringArray1:string[];
+  dateStringArray: string[];
+  dateStringArray1: string[];
   barChart: any;
-  deviceName:any;
-  deviceId:any;
+  deviceName: any;
+  deviceId: any;
   day1: number;
   day2: number;
   day3: number;
@@ -35,45 +36,43 @@ export class BarPage {
   day5: number;
   day6: number;
   day7: number;
-  payloadData:any[];
-  count:any[];
-  myCustomPayloadData:MyCustomPayload[];
-  constructor(public cookieService: CookieService,private deviceService: DeviceService,public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams) {
-    this.deviceName=this.cookieService.get('deviceName');
-    this.deviceId=this.cookieService.get('deviceId');
-    var i=0;
-    this.payloadData=[];
-    this.count=[];
-    this.myCustomPayloadData=[];
+  payloadData: any[];
+  count: any[];
+  myCustomPayloadData: MyCustomPayload[];
+  constructor(public cookieService: CookieService, private deviceService: DeviceService, private utilityService: UtilityService, public loadingCtrl: LoadingController, public navCtrl: NavController, public navParams: NavParams) {
+    this.deviceName = this.cookieService.get('deviceName');
+    this.deviceId = this.cookieService.get('deviceId');
+    var i = 0;
+    this.payloadData = [];
+    this.count = [];
+    this.myCustomPayloadData = [];
     this.loading();
-    this.dateStringArray=[];
-    this.dateStringArray1=[];
-    for(i=0;i<7;i++)
-    {
-    var dateForPopArry = new Date();
-    dateForPopArry.setDate(dateForPopArry.getDate()-i);
-    this.dateStringArray.push(dateForPopArry.getDate().toString()+"-"+(dateForPopArry.getMonth()).toString());
+    this.dateStringArray = [];
+    this.dateStringArray1 = [];
+    for (i = 0; i < 7; i++) {
+      var dateForPopArry = new Date();
+      dateForPopArry.setDate(dateForPopArry.getDate() - i);
+      this.dateStringArray.push(dateForPopArry.getDate().toString() + "-" + (dateForPopArry.getMonth()).toString());
     }
     this.dateStringArray.reverse();
-    for(i=0;i<7;i++)
-    {
-    var dateForPopArry1 = new Date();
-    dateForPopArry1.setDate(dateForPopArry1.getDate()-i);
-    this.dateStringArray1.push(dateForPopArry1.getDate().toString()+"-"+(dateForPopArry1.getMonth()+1).toString());
+    for (i = 0; i < 7; i++) {
+      var dateForPopArry1 = new Date();
+      dateForPopArry1.setDate(dateForPopArry1.getDate() - i);
+      this.dateStringArray1.push(dateForPopArry1.getDate().toString() + "-" + (dateForPopArry1.getMonth() + 1).toString());
     }
     this.dateStringArray1.reverse();
     console.log(this.dateStringArray);
     console.log(this.dateStringArray1);
-    setTimeout(()=>{
-      this.day1=parseInt(this.dateStringArray[0]);
-      this.day2=parseInt(this.dateStringArray[1]);
-      this.day3=parseInt(this.dateStringArray[2]);
-      this.day4=parseInt(this.dateStringArray[3]);
-      this.day5=parseInt(this.dateStringArray[4]);
-      this.day6=parseInt(this.dateStringArray[5]);
-      this.day7=parseInt(this.dateStringArray[6]);
-      console.log(this.day1,this.day2,this.day3,this.day4,this.day5,this.day6,this.day7)
-    },1000);
+    setTimeout(() => {
+      this.day1 = parseInt(this.dateStringArray[0]);
+      this.day2 = parseInt(this.dateStringArray[1]);
+      this.day3 = parseInt(this.dateStringArray[2]);
+      this.day4 = parseInt(this.dateStringArray[3]);
+      this.day5 = parseInt(this.dateStringArray[4]);
+      this.day6 = parseInt(this.dateStringArray[5]);
+      this.day7 = parseInt(this.dateStringArray[6]);
+      console.log(this.day1, this.day2, this.day3, this.day4, this.day5, this.day6, this.day7)
+    }, 1000);
     this.getCount();
   }
 
@@ -81,72 +80,51 @@ export class BarPage {
     console.log('ionViewDidLoad BarPage');
   }
 
-  getCount(){
-    var dateMonthString;
-    var dateDayString;
-    const date = new Date();
-    date.setDate(date.getDate()-7);
-    date.setMonth(date.getUTCMonth()+1);
-    if(date.getUTCMonth()<10)
-    {
-      dateMonthString = "0"+date.getUTCMonth().toString();
-    }else{
-      dateMonthString = date.getUTCMonth().toString();
-    }
-    if(date.getUTCDate()<=9){
-      dateDayString = "0"+date.getUTCDate().toString();
-    }else{
-      dateDayString = date.getUTCDate().toString();
-    }
-    const utcTime = date.getUTCFullYear().toString()+"-"+dateMonthString+"-"+dateDayString+"T00:00:00.000Z";
+  getCount() {
+    var utcTime = this.utilityService.getDateFormat(7);
+    utcTime = utcTime + "T" + this.utilityService.getDateFormat(-1);
     console.log(utcTime);
-    this.deviceService.getPayloadData(this.deviceId,utcTime).subscribe((data)=>{
+    this.deviceService.getPayloadData(this.deviceId, utcTime).subscribe((data) => {
       var i;
-      var a=0;
+      var a = 0;
       this.payloadData = data['Items'];
       console.log(this.payloadData);
-      for(i=0;i<this.payloadData.length;i++)
-      {
-       var currentDate = new Date(this.payloadData[i].Time.S);
-       this.payloadData[i].Time.S = currentDate.getDate() + "-" + currentDate.getMonth();
-       console.log(this.payloadData[i].Time.S);
+      for (i = 0; i < this.payloadData.length; i++) {
+        var currentDate = new Date(this.payloadData[i].Time.S);
+        this.payloadData[i].Time.S = currentDate.getDate() + "-" + currentDate.getMonth();
+        console.log(this.payloadData[i].Time.S);
       }
-      for(i=0;i<this.dateStringArray.length;i++)
-      {
+      for (i = 0; i < this.dateStringArray.length; i++) {
         var myCurrentPayload = new MyCustomPayload();
-        myCurrentPayload.date=this.dateStringArray[i];
+        myCurrentPayload.date = this.dateStringArray[i];
         this.myCustomPayloadData.push(myCurrentPayload);
       }
-      for(i=0;i<this.myCustomPayloadData.length;i++)
-      {
-        for(var j=0;j<this.payloadData.length;j++)
-        {
-          if(this.payloadData[j].Time.S===this.myCustomPayloadData[i].date)
-          {
-            if(this.payloadData[j].RawData.S.indexOf('fd')>=0)
-            {
+      for (i = 0; i < this.myCustomPayloadData.length; i++) {
+        for (var j = 0; j < this.payloadData.length; j++) {
+          if (this.payloadData[j].Time.S === this.myCustomPayloadData[i].date) {
+            if (this.payloadData[j].RawData.S.indexOf('fd') >= 0) {
               a++;
-              this.count[i]=a;
+              this.count[i] = a;
               console.log(this.payloadData[j].RawData.S);
             }
           }
         }
       }
     });
-    setTimeout(()=>{
+    setTimeout(() => {
       this.barGraph();
-    },6000);
+    }, 6000);
   }
 
-  loading(){
+  loading() {
     let load = this.loadingCtrl.create({
-      content:'Loading Please Wait....',
+      content: 'Loading Please Wait....',
       duration: 6000
     });
     load.present();
   }
 
-  barGraph(){
+  barGraph() {
     console.log(this.count);
     this.barChart = new Chart(this.bar.nativeElement, {
       type: 'bar',
@@ -154,7 +132,7 @@ export class BarPage {
         labels: this.dateStringArray1,
         datasets: [{
           label: 'Contact counts per day',
-          data: [this.count[0],this.count[1],this.count[2],this.count[3],this.count[4],this.count[5],this.count[6]],
+          data: [this.count[0], this.count[1], this.count[2], this.count[3], this.count[4], this.count[5], this.count[6]],
           backgroundColor: [
             'rgba(255, 99, 132, 0.5)',
             'rgba(54, 162, 235, 0.5)',
@@ -179,18 +157,18 @@ export class BarPage {
       options: {
         scales: {
           yAxes: [{
-            scaleLabel:{
-              display:true,
-              labelString:'Contacts per day'
+            scaleLabel: {
+              display: true,
+              labelString: 'Contacts per day'
             },
             ticks: {
               beginAtZero: true
             }
           }],
           xAxes: [{
-            scaleLabel:{
-              display:true,
-              labelString:'Day'
+            scaleLabel: {
+              display: true,
+              labelString: 'Day'
             }
           }]
         }
@@ -198,14 +176,12 @@ export class BarPage {
     });
   }
 
-  logout()
-  {
+  logout() {
     this.navCtrl.setRoot(LoginPage);
-    this.cookieService.delete('xAuthToken'); 
+    this.cookieService.delete('xAuthToken');
   }
 
-  goBack()
-  {
+  goBack() {
     this.navCtrl.setRoot('AnalyticsPage');
   }
 

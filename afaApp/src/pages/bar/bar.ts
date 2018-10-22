@@ -102,7 +102,9 @@ export class BarPage {
       for (i = 0; i < this.myCustomPayloadData.length; i++) {
         for (var j = 0; j < this.payloadData.length; j++) {
           if (this.payloadData[j].Time.S === this.myCustomPayloadData[i].date) {
-            if (this.payloadData[j].RawData.S.indexOf('fd') >= 0) {
+            if (this.payloadData[j].RawData.S.indexOf('fd') >= 0 ||
+              this.payloadData[j].RawData.S.indexOf('03') >= 0 ||
+              this.payloadData[j].RawData.S.indexOf('07') >= 0) {
               a++;
               this.count[i] = a;
               console.log(this.payloadData[j].RawData.S);

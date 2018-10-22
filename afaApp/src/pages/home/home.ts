@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DeviceService } from '../../services/device.service';
 import { GatewayService } from '../../services/gateway.service';
-import { ExceptionService } from '../../services/exception.service';
+import { ExceptionService } from '../../services/exception.service';  
 import { DeviceInfo } from '../../model/DeviceInfo';
 import { AlertController } from 'ionic-angular';
 import { LoginPage } from '../login/login';

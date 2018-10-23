@@ -38,7 +38,7 @@ export class TablePage {
     this.panel=[];
     this.deviceService.getPayloadData(this.deviceId, utcTime).subscribe((data) => {
       console.log(data);
-      this.payloadData = data['Items'];
+      this.payloadData = data['Items'].reverse();
 
       for (var i = 0; i < this.payloadData.length; i++) {
         let currentPanel = new DeviceInfo();

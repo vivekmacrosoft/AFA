@@ -22,8 +22,8 @@ export class DeviceService {
   //   return this.http.get(this.mqApiString + 'devices/' + id, {headers: this.util.SECURED_HEADER});
   // }
 
-  getAllDevices() {
-    return this.http.get("https://gkefuynsbd.execute-api.us-east-1.amazonaws.com/TEST/getdevices?requestType=getdevices");
+  getAllDevices(location) {
+    return this.http.get("https://gkefuynsbd.execute-api.us-east-1.amazonaws.com/TEST/getdevices?requestType=getdevices&location=" + location);
   }
 
 

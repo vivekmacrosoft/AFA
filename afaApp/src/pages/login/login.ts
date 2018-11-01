@@ -112,6 +112,7 @@ export class LoginPage {
         console.log(data);
         if (data && data.token) {
           this.cookieService.set('xAuthToken', data.token);
+          this.cookieService.set('location', data.location);
           this.presentToast();
           this.navCtrl.setRoot('HomePage');
         }

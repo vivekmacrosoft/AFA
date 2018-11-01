@@ -104,7 +104,8 @@ export class HomePage {
     this.show = [];
     this.gatewayService.getAllGateways().subscribe((gatewaysFromApi: any[]) => {
       this.gateways = gatewaysFromApi['Gateways'];
-      this.deviceService.getAllDevices().subscribe((devicesFromApi: any[]) => {
+      console.log("Location:" + this.cookieService.get('location'));
+      this.deviceService.getAllDevices(this.cookieService.get('location')).subscribe((devicesFromApi: any[]) => {
         this.devices = devicesFromApi['Items'];
         console.log(this.devices);
         for (var i = 0; i < this.devices.length; i++) {

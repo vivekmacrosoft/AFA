@@ -17,7 +17,7 @@ export class LoginService {
 
   login(user: UserLogin) {
 
-    return this.http.get("https://gkefuynsbd.execute-api.us-east-1.amazonaws.com/TEST/getuser?requestType=login&username="+user.username+"&password="+user.password);
+    return this.http.get("https://gkefuynsbd.execute-api.us-east-1.amazonaws.com/TEST/getuser?requestType=login&username="+user.username.toLowerCase()+"&password="+user.password);
   }
   // machineQlogin(user: UserLogin) {
     
